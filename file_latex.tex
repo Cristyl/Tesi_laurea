@@ -22,7 +22,7 @@
 
 \title{4Money}
 
-\subtitle{Gestisci il tuo portafogli in maniera smart}
+\subtitle{Gestisci il tuo portafoglio in maniera smart}
 
 \author{Cristian Andrei Mai Mihai}
 
@@ -80,7 +80,7 @@ I numerosi grafici presenti nel sito sono invece stati implementati con Highchar
 
 \newpage
 \section{Lato Client}
-Questa sezione si occuperà di descrivere le varie componenti delle pagine visualizzabili di 4Money, illustrando le motivazioni che hanno portato alla scelta di certe implemenazioni e le loro funzionalità. Nella prima parte verranno mostrate essenzialmente discusse principalmente le pagine accessibili agli utenti non iscritti e con account comuni, per poi passare nella seconda parte alla trattazione delle pagine disponibili agli amministratori. Tutti i dati reletivi agli account sono stati fittizi e creati dall'autore per rendere più comprensibile come le pagine funzionino e il loro aspetto nel caso di un account attivo ed utilizzato.
+Questa sezione si occuperà di descrivere le varie componenti delle pagine visualizzabili di 4Money, illustrando le motivazioni che hanno portato alla scelta di certe implemenazioni e le loro funzionalità. Nella prima parte verranno discusse le parti comuni a tutti i tipi di utenti e a quelli comuni, per poi passare alla trattazione dei profili di tipo amministratore. Tutti i dati reletivi agli account sono stati fittizi e creati dall'autore per rendere più comprensibile come le pagine funzionino e il loro aspetto nel caso di un account attivo ed utilizzato.
 \subsection{La NavBar}
 Prima di iniziare a descrivere le pagine vere e proprie è utile trattare prima la barra di navigazione, a cui ci riferiremo in questa tesi con il termine "navbar". \\
 La navbar è un sistema attraverso il quale è possibile navigare tra le varie pagine del sito a seconda del tipo di autorizzazione di cui l'utente dispone. Esistono infatti tre diverse istanze di questa: una per l'utente che non ha effettuato l'accesso, una per gli utenti comuni e infine una per gli utenti amministratori.
@@ -123,12 +123,119 @@ Infine la navbar degli amministratori, la quale permette di accedere a pagine lo
     \label{fig:home}
 \end{figure}
 La pagina "Home" è la pagina che funge da "index" dell'applicazione. Le principale funzioni che questa offre sono quelle di facciata per poter passare alle altre pagine attraverso la navbar. Inoltre è presente un pulsante "Scopri le funzionalità" che consente di aprire un sipario come si può vedere nella figura 2.5. La pagina presenta ora le principali funzionalità di 4Money allegando vicino a una rapida descrizione di queste un'immagine esemplificativa. Lo scopo è quello di presentare l'applicazione ai nuovi utenti facendo loro scoprire ciò che possono fare.
-\begin{figure}[h]
+\begin{figure}[!ht]
     \centering
-    \includegraphics[width=1\linewidth]{home2.png}
+    \includegraphics[width=0.9\linewidth]{home2.png}
     \caption{Home sipario}
     \label{fig:home_sipario}
+\end{figure}
+\newpage
+\subsection{Register}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{register.png}
+    \caption{Pagina di registrazione}
+    \label{fig:register}
+\end{figure}
+La pagina "Register" è dedicata alla registrazione degli utenti, i quali dovranno inserire i dati loro richiesti secondo un formato prestabilito. Queste informazioni possono essere personali, come nome e cognome, o relative all'account stesso come username, password o saldo iniziale. I campi compilati hanno inoltre dei prerequisiti per essere convalidati, alcuni dei quali sono mostrati sotto il rispettivo campo come nel caso della password. La convalida avviene in più modi: in modo dinamico utilizzando JavaScript durante la compilazione dei singoli campi, mostrando un segnale di errore nel caso non venga rispettato il formato richiesto, come per esempio l'inserimento di un numero nel campo "Nome" oppure selezionare una data di nascita per cui l'utente avrebbe un'età inferiore ai 14 anni; se viene comunque inviato il "form", ovvero il modulo in Html, nonostante gli errori usando il pulsante "Registrati", avverrà un nuovo controllo sui campi sia lato Client con JavaScript, sia lato server con Php. Il controllo lato Server è necessario per la verifica in quanto il controllo lato Client potrebbe semplicemente essere eluso eliminando le righe di codice JavaScript che lo effettua; a suo modo quest'ultimo ha il compito di facilitare il compito del Server, effettuando una prima verifica e bloccando la registrazione se necessario, in modo che il Server non debba analizzare campi sbagliati. Il tipo di account che è possibile creare in questa pagina è quello comune, mentre gli account di tipo amministratore non possono essere creati, se non inserendoli direttamente nella base di dati.
+\subsection{Login}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{login.png}
+    \caption{Pagina di accesso}
+    \label{fig:login}
+\end{figure}
+La pagina "Login" è dedicata all'accesso degli utenti. I dati richiesti vanno inseriti nei rispettivi campi, implementati dentro un form Html in modo simile alla pagina "Register", effettuando anche qui validazioni sia lato Client che Server. Sia gli utenti comuni che gli utenti amministratori devono effettuare l'accesso attraverso questa pagina, utilizzando i propri username e password. Oltre ai campi sono presenti il pulsante "Accedi", per inviare il form, e un collegamento verso la pagina "Register", suggerito per gli utenti che non hanno ancora effettuato la registrazione.
+\subsection{Dashboard}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{dashboard.png}
+    \caption{Pagina Dashboard}
+    \label{fig:dashboard}
+\end{figure}
+Una volta avvenuto l'accesso da parte dell'utente, questo verrà indirizzato verso la pagina "Dashboard", cosiderata il cuore di 4Money, dove è possibile tenere sottocontrollo le principali informazioni che il sito fornisce. La pagina potrebbe essere definita in cinque sezioni:
+\begin{enumerate}
+    \item I cinque riquadri in alto mostrano informazioni quantitative sul saldo attuale dell'utente, oltre che sulle entrate e sulle uscite del mese e dell'anno in corso. Questi numeri vengono calcolati basandosi sulle transazioni inserite dall'utente e sul saldo iniziale inserito in fase di registrazione;
+    \item Sotto i riquadri a sinistra è presente il primo dei tre grafici della pagina realizzati con Highcharts. In particolare, questo è un grafico a torta che mostra le percentuali delle spese del mese in corso in base alla categoria. In questo modo l'utente si può rendere conto quale sia la categoria che è gli è costata maggiormente durante il mese.
+    \item Alla destra del grafico a torta è presente uno a linea, che mostra la variazione delle entrate durante i giorni del mese corrente;
+    \item In basso a sinistra vi è un grafico a colonne che indica il valore delle spese durante l'anno corrente per ogni mese;
+    \item Infine, in basso a destra, è presente una tabella che indica le imminenti scadenze delll'utente, da lui precedentemente inserite, fungendo da promemoria per esso.
+\end{enumerate}
+Osserviamo ora l'implementazione di uno dei grafici con Highcharts, il cui codice viene mostrato nella figura 2.9. \\
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{piechart_code.png}
+    \caption{Codice del grafico a torta}
+    \label{fig:piechart_code}
 \end{figure} \\
+Il codice si presenta come un comune script di JavaScript, costruendo un oggetto "Highcharts.chart" in base al nome inserito, nel nostro caso "pie chart", e alla compilazione dei vari attributi del grafico, come il titolo o il formato delle etichette delle sezioni, ma l'attributo di maggiore importanza è "series": andranno, infatti, inseriti qui i dati che devono essere inseriti nel grafico, in formato Json. Nel caso del grafico a torta i dati da inserire richiedono un nome, il nome della categoria per quello della pagina "Dashboard", un colore da assegnare alla sezione di quel dato e la percentuale da dedicare alla sezione. \\
+\MakeUppercase{è} necessario far notare che i dati mostrati dai grafici fanno riferimento al mese o anno fino al giorno attuale in cui vengono visualizzati e non a questi nella loro completezza. Si osserva facilmente infatti che il grafico a linea presenta informazioni fino al giorno 26, mentre il grafico a colonne fino al mese di ottobre, data in cui sono state salvate le schermate delle figure presenti in questa tesi.
+\newpage
+\subsection{Transazioni}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.85\linewidth]{transazioni.png}
+    \caption{Pagina delle transazioni}
+    \label{fig:transazioni}
+\end{figure}
+La pagina "Transazioni" è la pagina dedita alla registrazione delle varie spese affrontatate dall'utente, nonché eventuali entrate. Queste vengono visualizzate come righe di una tabella in ordine cronologico, dove le righe più in alto indicano le più recenti transazioni. L'utente può interagire con la tabella in diversi modi:
+\begin{itemize}
+    \item Attraverso i filtri, costituiti da due pulsanti a finestra dove è possibile selezionare la categoria ed il tipo, ovvero se la transazione è una spesa o un introito, di interesse. L'implementazione dei filtri è stata fatta con AJAX per evitare di dover caricare nuovamente la pagina ogni volta che si utilizza un filtro, in quanto l'utente potrebbe voler fare questa operazione numerose volte e questo permette una maggiore rapidità nell'esecuzione di tale azione;
+    \item Attraverso pulsanti quali "Aggiungi entrata" ed "Aggiungi uscita", che permettono come suggerisce il nome di aggiungere una transazione del corrispettivo tipo, aprendo una sottofinestra detta "modal", di cui discuteremo successivamente
+    \item Attraverso i pulsanti presenti alla destra di ogni transazione: il punsate grigio apre un modal simile a quello di registrazione delle transazioni, ma questo serve per modificare i dati della riga corrispondente; il pulsante rosso serve invece ad eliminare tale transazione.
+    \item Attraverso una barra di navigazione, che non ha nulla a che fare con la navbar, che si trova in fondo alla pagina. Questa permette di visualizzare altre transazioni oltre alle 20 presenti nella tabella, organizzate in ordine cronologico. Si può passare da una tabella alla precedente o successiva, o, in alternativa, verso la prima o ultima. Anche questa funzione è stata implementata con AJAX per rendere più dinamica questa operazione
+\end{itemize}
+Nella figura 2.11 si può osservare un esemopio di uno dei modal della pagina "Transazioni". \\
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{modal_transazioni.png}
+    \caption{Modal delle transazioni}
+    \label{fig:modal_transazioni}
+\end{figure} \\
+Il modal qui esaminato è quello generato dal click sul pulsante "Aggiungi uscita", ma gli altri sono identici se non per l'inizializzazione dei campi nel modal di modifica. Questa sottofinestra contiene un form che richiede delle informazioni sulla transazione: inizialmente è presente un pulsante a scorrimento per la selezione della categoria tra quelle esistenti nel sistema; a seguire si ha un campo di testo dove inserire una descrizione, per poter aggiungere informazioni più dettagliate nel caso la categoria non basti a specificare le ragioni dietro quella transazione; si devono poi selezionare una data e un importo. Quest'ultimo deve essere un numero decimale o un intero, nel qual caso sarà considerato come un numero decimale con nessuna cifra decimale e quindi nessun centesimo. Non bisogna specificare il segno dell'importo, visto che questo verrà trattato di corrispondenza in base al tipo di modal in cui è stato inserito. I pulsanti "Salva transazione" e "Chiudi" servono rispettivamente a confermare l'invio del form oppure ad annullare l'operazione. In seguito all'inserimento della transazione nel sistema verrà inivato a schermo un messaggio di errore o di successo a seconda del risulatato dell'azione.
+\subsection{Scadenze}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{scandenze.png}
+    \caption{Pagina delle scadenze}
+    \label{fig:scadenze}
+\end{figure}
+La pagina "Scadenze" è del tutto identica alla pagina "Transazioni" in aspetto e funzionalità, ma introduce un nuovo concetto: quello appunto di scadenza. Per scadenza si intende una transazione che non è ancora avvenuta ed è stata inserita in una data futura. Una particolarità che questo concetto ha portato è stata il modo in cui viene trattato il dato "data" dei modal delle transazioni e delle scadenze stesse: a seconda della data inserita il sistema riconoscerà in automatico a quale delle due appartiene e verrà inserita nella corrispodente tabella, indirizzando l'utente verso l'omonima pagina al completamento dell'operazione.
+\newpage
+\subsection{Statistiche}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{statistiche.png}
+    \caption{Pagina delle statistiche}
+    \label{fig:statistiche}
+\end{figure}
+La pagina "Statistiche" presenta dei grafici di particolare interesse per l'utente nella gestione delle proprie finanze, senza essere caretterizzati dall'essenzialità di quelli presenti nella dashboard. In particolare la pagina presenta tre grafici e un pulsante che modifica il periodo di riferimento di quest'ultimi, in quanto normalemente la visulizzazione avviene per il mese corrente, ma è possibile selezionare come periodo anche l'anno in corso.
+\begin{itemize}
+    \item Il grafico in alto è un misto tra grafico a linee ed ad area: le aree verdi e rosse rappresentano rispettivamente il valore delle entrate e delle uscite, mentre la linea azzurra mette in evidenza la differenza tra le precedenti. L'utente è così in grado di comprendere la distribuzione durante il mese o l'anno di come esso ricava o spende il proprio denaro;
+    \item Il grafico in basso a sinistra indica l'andamento del saldo nel corso del mese o anno di riferimento, dando modo all'utente di comprendere se esso è mai stato in crisi finanziarie oppure ha mantenuto un comportamento costante. Il calcolo dei valori del grafico dipendono dalle transazioni del periodo di riferimento, in particolare, il primo valore del periodo è lo stesso dell'ultimo del periodo precedente e viene calcolato in base a tutte le transazioni e al saldo iniziale dichiarato. Inoltre il colore del grafico dipende dal segno dell'ultimo valore disponibile: se questo è positivo la linea sarà di colore verde, come da figura, altrimenti, nel caso di un saldo negativo, la linea divernterà rossa, fungendo da indicatore di pericolo per l'utente che osserva tale grafico;
+    \item Il grafico in basso a destra, in modo simile al precedente, indica l'andamento del "Risparmio" durante il periodo di riferimento. Per risparmio si intende una particolare categoria nel modo in cui questa viene trattata. A seconda del tipo di transazione che ha "risparmio" come categoria il saldo si comporterà in modo diverso: se sto segnando una spesa allora questa verrà considerata come un decremento per il saldo ed un incremento per il risparmio, al contrario, un entrata è considerata un incremento del saldo ed un decremento per il risparmio. Lo scopo di questa funzione è di permettere all'utente di poter gestire un conto di risparmio aiutando l'utente a "salvare" i propri soldi. Anche questo grafico cambia colore in base al segno dell'ultimo valore disponibile.
+\end{itemize}
+\subsection{Profilo utente}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{profile.png}
+    \caption{Pagina del profilo utente}
+    \label{fig:profile}
+\end{figure}
+La pagina "Profilo" è la pagina nella quale l'utente può visualizzare le informazioni riguardanti il proprio profilo inserite in fase di registrazione. L'interfaccia si presenta divisa in 4 sezioni di interesse:
+\begin{itemize}
+    \item In alto a sinistra la sezione "Profilo", dove vengono mostrati l'username e l'immagine di profilo, la quale può essere modificata, ma selezionata solo tra quelle predefinite dal sito;
+    \item In basso a sinistra la sezione "Esporta transazioni effettuate". Qui sono tre presenti tre pulsanti che permettono, come suggerisce il loro nome, di scaricare le informazioni della tabella della pagina "Transazioni" in diversi formati: Json, CSV e XML;
+    \item In alto a destra la sezione "Informazioni personali", composta da un form dove è possibile modificare i dati personali dell'utente;
+    \item In basso a destra la sezione "Dati di accesso", anche questa composta da un form del tutto indipendente dal precedente, dove è possibile modificare le informazioni strattamente riguardanti l'account. Nel caso in cui attraverso questa sezione venga modificata la password l'utente sarà disconnesso in automatico e dovrà effettuare nuovamente l'accesso, questa volta utilizzando la nuova password.
+\end{itemize}
+\subsection{Utenti}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{utenti_admin.png}
+    \caption{Pagina degli utenti}
+    \label{fig:utenti_admin}
+\end{figure}
 
 
 \end{document}
