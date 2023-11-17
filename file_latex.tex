@@ -8,8 +8,12 @@
 \usepackage{graphicx}
 \usepackage{afterpage}
 \usepackage{makeidx}
+\usepackage{tabularx}
+\usepackage{booktabs}
 \usepackage{chngcntr}
 \counterwithin{figure}{section}
+\renewcommand{\thetable}{\arabic{table}}
+
 
 \renewcommand{\thesection}{\arabic{section}}
 \makeindex
@@ -229,7 +233,8 @@ La pagina "Profilo" è la pagina nella quale l'utente può visualizzare le infor
     \item In alto a destra la sezione "Informazioni personali", composta da un form dove è possibile modificare i dati personali dell'utente;
     \item In basso a destra la sezione "Dati di accesso", anche questa composta da un form del tutto indipendente dal precedente, dove è possibile modificare le informazioni strattamente riguardanti l'account. Nel caso in cui attraverso questa sezione venga modificata la password l'utente sarà disconnesso in automatico e dovrà effettuare nuovamente l'accesso, questa volta utilizzando la nuova password.
 \end{itemize}
-\subsection{Utenti}
+\subsection{Utente amministratore}
+\subsubsection{Utenti}
 \begin{figure}[h]
     \centering
     \includegraphics[width=1\linewidth]{utenti_admin.png}
@@ -237,19 +242,125 @@ La pagina "Profilo" è la pagina nella quale l'utente può visualizzare le infor
     \label{fig:utenti_admin}
 \end{figure}
 La pagina "Utenti" è la prima che gli amministratori visualizzano dopo aver effettuato l'accesso. Questa è composta da una tabella dove vengono visualizzati i dati degli utenti registrati; ogni riga rappresenta un diverso utente e il colore dipende dal suo sesso. Le funzioni principali della pagina però risiedono nei pulsanti "Blocca utente" ed "Elimina utente", i quali come suggerisce il nome servono rispettivamente a bloccare ed eliminare l'account dell'utente corrispondente alla riga. Per bloccare un utente si entende impedire a questo l'accesso modificando la sua password, mentre l'eliminazione implica la completa rimozione dell'account dalla base di dati insieme a tutte le sue transazioni.
-\subsection{Categorie}
+\subsubsection{Categorie}
 \begin{figure}[h]
     \centering
     \includegraphics[width=1\linewidth]{categorie.png}
     \caption{Pagina delle categorie}
     \label{fig:categorie}
 \end{figure}
-La pagina "Categorie" è la pagina attraverso cui gli amministratori possono gestire le categorie delle transazioni. Anche qui è presente una tabella le cui righe indicano le diverse categorie mentre le colonne i dati relativi ad esse, oltre a due pulsanti per la modifica e l'eliminazione. Ogni categoria è caratterizzata da un nome, per essere riconoscibile dall'utente ed un colore per l'interazione visiva attraverso i grafici. \MakeUppercase{è} possibile anche creare le categorie attraverso il pulsante "Aggiungi categoria" che sarà in seguito disponibile a tutti gli utenti. La creazione e modifica delle categorie avviene l'utilizzo di un modal come è visibile nella figura 2.17.
+La pagina "Categorie" è la pagina attraverso cui gli amministratori possono gestire le categorie delle transazioni. Anche qui è presente una tabella le cui righe indicano le diverse categorie mentre le colonne i dati relativi ad esse, oltre a due pulsanti per la modifica e l'eliminazione. Ogni categoria è caratterizzata da un nome, per essere riconoscibile dall'utente ed un colore per l'interazione visiva attraverso i grafici. \MakeUppercase{è} possibile anche creare le categorie attraverso il pulsante "Aggiungi categoria" le quali saranno in seguito disponibili a tutti gli utenti. La creazione e modifica delle categorie avviene l'utilizzo di un modal come è visibile nella figura 2.17.
 \begin{figure}[h]
     \centering
     \includegraphics[width=1\linewidth]{modal_categorie.png}
     \caption{Modal delle categorie}
     \label{fig:modal_categorie}
 \end{figure}
+Questo modal richiedi di compilare solamente i campi riguardanti il nome e il colore. quest'ultimo selezionabile da una palette che si apre dopo aver usato l'apposito pulsante. Facendo click su "Chiudi" l'operazione viene annullata, mentre "Salva modifiche" rende ufficiale la creazione della categoria.
+\subsubsection{Statistiche}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{stat_admin.png}
+    \caption{Pagina delle statistiche degli amministratori}
+    \label{fig:statistiche_admin}
+\end{figure}
+La pagina "Statistiche" del profilo amministratore contiene similmente dei grafici come per gli utenti comuni, ma i dati riportati sono sostanzialmente diverse: si osservano diverse distribuzioni riguardo gli utenti il cui scopo è consentire gli amministratori di cogliere eventuali informazioni su come l'applicazione può essere migliorata.
+I grafici presenti sono i seguenti:
+\begin{itemize}
+    \item In alto a sinistra vengono mostrate le percentuali di utenti in base a sesso ed età, dove il colore e la direzione indicano il sesso, mentre la riga indica a quale classe di età appartiene. In questo modo si può capire quali sono le persone che utilizzano la piattaforma e suggerisce verso quale direzione i futuri cambiamenti debbano vertere per aumentare il numero di iscritti.
+    \item In alto a destra il grafico a colonne indica il numero di utenti per nazione. L'informazione suggerisce dove l'applicazione si è diffusa maggiormente e come si dovrebbe agire di conseguenza per renderla più accessibile.
+    \item In basso il grafico mostra la media delle entrate o delle uscite, in base al filtro selezionato, degli utenti in base al sesso e l'età. I dati del grafico sono finalizzati alla creazione di nuove funzionalità della piattaforma.
+\end{itemize}
+\subsubsection{Profilo}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{profilo_admin.png}
+    \caption{Pagina profilo degli amministratori}
+    \label{fig:profilo_admin}
+\end{figure}
+La pagina "Profilo" degli amministratori consente di cambiare il nome, dato che funge solo funzioni estetiche visto che non è necessario per l'accesso, e la password utilizzando un form. \MakeUppercase{è} stato scelto di dare meno opzioni di personalizzazione agli amministratori rispetto agli account comuni, visto che sono account puramente funzionali.
+\newpage
+\section{Lato Server}
+4Money è un'applicazione web di tipo informativo, dedita alla memorizzazione e alla visualizzazione di dati, perciò le funzionalità del lato Server si basano unicamente sulla comunicazione tra front-end e base di dati. Questi saranno, infatti, gli argomenti trattati in questa sezione, oltre ad alcune accortezze per quanto riguarda la sicurezza del sito.
+\subsection{Il Database}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\linewidth]{Database_4Money.drawio (1).png}
+    \caption{Schema E-R della base di dati}
+    \label{fig:e-r_database}
+\end{figure}
+
+\newpage
+\begin{table}[h]
+    \centering
+    \begin{tabularx}{\linewidth}{ccc}
+        \toprule
+        Nome & Descrizione & Chiavi primarie\\
+        \midrule
+        Utente & Contiene gli utenti registrati & username\\
+        Stati & Contiene il nome di tutti gli stati & nome\_stati\\
+        Spesa & Contiene tutte le transazioni dei vari utenti & ID \& utente\\
+        Categoria & Contiene le categorie delle spese & ID\\
+        Admin & Contiene i profili di tipo amministratore & ID\\
+        \bottomrule
+    \end{tabularx}
+    \caption{Tabelle base di dati}
+    \label{tab:tabelle}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \begin{tabularx}{\linewidth}{ccX}
+        \toprule
+        Nome & Descrizione \\
+        \midrule
+        Appartiene & Indica l'appertenza delle spese alle categorie\\
+        Effettua & Indica l'appartenenza delle spese agli utenti\\
+        Nazione & Indica l'appartenenza degli utenti ad una certa nazione \\
+        \bottomrule
+    \end{tabularx}
+    \caption{Relazioni base di dati}
+    \label{tab:relazioni}
+\end{table}
+\begin{table}[!ht]
+    \centering
+    \begin{tabularx}{\linewidth}{ccccX}
+        \toprule
+        Nome & Tipo & Tabella & Descrizione \\
+        \midrule
+        username & Varchar & Utente & Nome dell'account \\
+        nome & Varchar & Utente & Nome dell'utente \\
+        cognome & Varchar & Utente & Cognome dell'utente \\
+        sesso & Tinyint & Utente & Genere dell'utente, salvato come valori 0 ed 1 \\
+        nazionalità & Varchar & Utente & Nome del paese di appartenza\\
+        dataN & Date & Utente & Data di nascita dell'utente \\
+        email & Varchar & Utente & Email dell'utente \\
+        password & Varchar & Utente & Password dell'utente \\
+        pfp & Varchar & Utente & Percorso dell'immagine di profilo \\
+        saldo\_ini & Decimal & Utente & Saldo iniziale \\
+        nome\_stati & Varchar & Stati & Nome dello stato \\
+        ID & Int & Spesa & Numero identificativo della spesa \\
+        utente & Varchar & Spesa & Username dell'utente a cui appartiene la spesa\\
+        importo & Double & Spesa & Valore dell'importo \\
+        data & Data & Spesa & Data in cui è avvenuta la spesa \\
+        descrizione & Varchar & Spesa & Descrizione della spesa \\
+        categoria & Smallint & Spesa & Categoria della spesa \\
+        ID & Smallint & Categoria & Numero identificativo della categoria \\
+        nome & Varchar & Categoria & Nome della categoria \\
+        colore & Varchar & Categoria & Valore esadecimale del colore \\
+        ID & Varchar & Admin & Codice identificativo degli amministratori \\
+        nome & Varchar & Admin & Nome dell'amministratore \\
+        password & Varchar & Admin & Password dell'account \\
+    \end{tabularx}
+    \caption{Attributi della base di dati}
+    \label{tab:attributi}
+\end{table}
+\newpage
+Sono inoltre presenti delle foreign keys:
+\begin{enumerate}
+    \item L'attributo nazionalità della tabella Utente verso l'attributo nome\_stati della tabella Stati
+    \item L'attributo utente della tabella Spesa verso l'attributo username della tabella Utente
+    \item L'attributo categoria della tabella Spesa verso l'attributo ID della tabella Categoria
+\end{enumerate}
 
 \end{document}
