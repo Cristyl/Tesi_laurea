@@ -236,6 +236,20 @@ La pagina "Profilo" è la pagina nella quale l'utente può visualizzare le infor
     \caption{Pagina degli utenti}
     \label{fig:utenti_admin}
 \end{figure}
-
+La pagina "Utenti" è la prima che gli amministratori visualizzano dopo aver effettuato l'accesso. Questa è composta da una tabella dove vengono visualizzati i dati degli utenti registrati; ogni riga rappresenta un diverso utente e il colore dipende dal suo sesso. Le funzioni principali della pagina però risiedono nei pulsanti "Blocca utente" ed "Elimina utente", i quali come suggerisce il nome servono rispettivamente a bloccare ed eliminare l'account dell'utente corrispondente alla riga. Per bloccare un utente si entende impedire a questo l'accesso modificando la sua password, mentre l'eliminazione implica la completa rimozione dell'account dalla base di dati insieme a tutte le sue transazioni.
+\subsection{Categorie}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{categorie.png}
+    \caption{Pagina delle categorie}
+    \label{fig:categorie}
+\end{figure}
+La pagina "Categorie" è la pagina attraverso cui gli amministratori possono gestire le categorie delle transazioni. Anche qui è presente una tabella le cui righe indicano le diverse categorie mentre le colonne i dati relativi ad esse, oltre a due pulsanti per la modifica e l'eliminazione. Ogni categoria è caratterizzata da un nome, per essere riconoscibile dall'utente ed un colore per l'interazione visiva attraverso i grafici. \MakeUppercase{è} possibile anche creare le categorie attraverso il pulsante "Aggiungi categoria" che sarà in seguito disponibile a tutti gli utenti. La creazione e modifica delle categorie avviene l'utilizzo di un modal come è visibile nella figura 2.17.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{modal_categorie.png}
+    \caption{Modal delle categorie}
+    \label{fig:modal_categorie}
+\end{figure}
 
 \end{document}
