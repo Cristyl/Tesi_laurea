@@ -62,8 +62,8 @@
 
 \section{Introduzione}
 \subsection{Presentazione}
-Questa tesi ha lo scopo di presentare 4Money, un’applicazione web nata come progetto del corso di Linguaggi e Tecnologie per il Web, descrivendo le funzionalità di tale sito sia lato client che lato server, oltre alle motivazioni che hanno portato alla scelta di certe implementazioni. \\ \\
-4Money è un’applicazione web che si pone l’obiettivo di aiutare i propri utenti a gestire al meglio le proprie finanze e per raggiungerlo offre un’interfaccia interattiva e funzionale la quale consente all’utente una vasta varietà di azioni disponibili e funzioni:
+Questa tesi ha lo scopo di presentare 4Money, un’applicazione web nata come progetto del corso di Linguaggi e Tecnologie per il Web, descrivendo le funzionalità di tale sito sia lato Client che lato Server, oltre alle motivazioni che hanno portato alla scelta di certe implementazioni. \\ \\
+4Money è un’applicazione web che si pone l’obiettivo di aiutare i propri utenti a gestire al meglio le proprie finanze e per raggiungerlo offre un’interfaccia interattiva e funzionale la quale consente all’utente una vasta varietà di azioni disponibili e funzionalità:
 \begin{itemize}
     \item Conserva informazioni riguardanti le spese o gli introiti salvati dall’utente in base a specifiche categorie, sia che questi siano passati o futuri;
     \item Permette di gestire un fondo di risparmio, detraendo o assegnando a esso risorse in base alle necessità dell’utente;
@@ -76,7 +76,7 @@ Sono presenti, inoltre, tre profili di tipo amministratore, uno per ognuno dei c
 4Money è stato realizzato utilizzando le classiche tecnologie per quanto riguarda la creazione di web app, a cui sono state aggiunte particolari librerie per sviluppare alcune funzionalità chiave del sito. \\ \\
 In primis è stato utilizzato Html, o HyperText Markup Language, un linguaggio di markup che ha il compito di fungere da struttura portante di qualsiasi pagina web. Gli ipertesti generati con Html sono documenti contenenti testo, immagini, audio, video o collegamenti ipertestuali, ovvero riferimenti ad altri documenti o altre pagine web stesse. La sintassi di Html sfrutta essenzialmente il concetto di "tag", il quale permette di marcare parti di testo dando loro particolari caratteristiche, modificabili attraverso degli attributi specifici del rispettivo tag. \\ \\
 Per quanto riguarda lo stile sono stati utilizzati Css e Bootstrap. Il primo, il cui acronimo sta per Cascading Style Sheets, è un linguaggio per la realizzazione di fogli di stile, che sfrutta i tag di Html per la propria implementazione. I fogli di stile possono essere di vari tipi, ma per questo progetto è stato utilizzato un Css esterno, ovvero un file che definisce le scelte stilistiche, importato dalle pagine al momento della loro creazione. In particolare, 4Money presenta solo un foglio per tutte le pagine, per rendere lo stile comune a ognuna di loro. Bootstrap, invece, è un framework Css tra i più utilizzati per lo sviluppo di front-end, che sfrutta a sua volta codici Html, Css e JavaScript per implementare diversi oggetti utili nella creazione di interfacce web, senza dover cambiare la sintassi dei linguaggi su cui si basa. \\ \\
-Per la dinamicità del sito lato client è stato utilizzato JavaScript, un liguaggio ad oggetti, interpretato e di alto livello, che è a sua volta può trovarsi in file apparte o immerso nel codice Html; nel caso specifico di 4Money si trovano entrambe le strutture. Gli script creati con questo linguaggio vengono eseguiti al momento dell'apertura della pagina alla quale appartengono. \\ \\
+Per la dinamicità del sito lato Client è stato utilizzato JavaScript, un liguaggio ad oggetti, interpretato e di alto livello, che a sua volta può trovarsi in file apparte o immerso nel codice Html; nel caso specifico di 4Money si trovano entrambe le strutture. Gli script creati con questo linguaggio vengono eseguiti al momento dell'apertura della pagina alla quale appartengono. \\ \\
 Le funzioni logiche del lato server sono state implementate con Php, uno dei più popolari sistemi di scripting per back end nello sviluppo di web app. \MakeUppercase{è} un linguaggio interpretato, di alto livello e anch'esso immergibile nel codice Html, che permette di rendere le pagine web dinamiche e di farle interagire efficacemente con il database. \\ \\
 Per la base di dati e la comunicazione con questa sono stati utilizzati SQL e Json. Il primo è un linguaggio che permette di interagire direttamente con il database sfruttando il concetto di "query", un sistema di richieste per la selezione di dati depositati in base a specifiche caratteristiche; il secondo, detto anche JavaScript Object Notation, rappresenta il formato standard per la serializzazione e la de-serializzazione di oggetti Javascript, ovvero la conversione da oggetto a stringa e viceversa. \\ \\
 4Money utilizza anche tecnologie quali AJAX, o Asynchronous Javascript And XML; basato su JavaScript, ha lo scopo di implementare interazioni asincrone tra web client e web server, ovvero permette di non dover caricare nuovamente la pagina per piccoli cambiamenti, ottenendo così una maggiore velocità di esecuzione e visualizzazione delle pagine. \\ \\
@@ -84,11 +84,11 @@ I numerosi grafici presenti nel sito sono invece stati implementati con Highchar
 
 \newpage
 \section{Lato Client}
-Questa sezione si occuperà di descrivere le varie componenti delle pagine visualizzabili di 4Money, illustrando le motivazioni che hanno portato alla scelta di certe implemenazioni e le loro funzionalità. Nella prima parte verranno discusse le parti comuni a tutti i tipi di utenti e a quelli comuni, per poi passare alla trattazione dei profili di tipo amministratore. Tutti i dati reletivi agli account sono stati fittizi e creati dall'autore per rendere più comprensibile come le pagine funzionino e il loro aspetto nel caso di un account attivo ed utilizzato.
+Questa sezione si occuperà di descrivere le varie componenti delle pagine visualizzabili di 4Money, illustrando le motivazioni che hanno portato alla scelta di certe implemenazioni e le loro funzionalità. Nella prima parte verranno discusse le parti comuni a tutti i tipi di utenti e a quelli comuni, per poi passare alla trattazione dei profili di tipo amministratore. Tutti i dati relativi agli account descritti in questa tesi sono stati fittizi e creati dall'autore per rendere più comprensibile come le pagine funzionino e il loro aspetto nel caso di un account attivo.
 \subsection{La NavBar}
-Prima di iniziare a descrivere le pagine vere e proprie è utile trattare prima la barra di navigazione, a cui ci riferiremo in questa tesi con il termine "navbar". \\
+Prima di iniziare a descrivere le pagine vere e proprie è utile trattare prima la barra di navigazione, a cui ci riferiremo in questa relazione con il termine "navbar". \\
 La navbar è un sistema attraverso il quale è possibile navigare tra le varie pagine del sito a seconda del tipo di autorizzazione di cui l'utente dispone. Esistono infatti tre diverse istanze di questa: una per l'utente che non ha effettuato l'accesso, una per gli utenti comuni e infine una per gli utenti amministratori.
-Nonostante queste divisioni, tutti i tipi hanno una struttura comune, che si basa su tecnlogie quali Html per la struttura, Css e Bootstrap per la forma e Php per la scelta di che tipo di navbar vada mostrata in base ai dati della sessione in corso, oltre a funzione che la rendono dinamica. \\
+Nonostante queste divisioni, tutti i tipi hanno una struttura comune, che si basa su tecnlogie quali Html per la struttura, Css e Bootstrap per la forma e Php per la scelta del tipo di navbar da mostrare in base ai dati della sessione in corso, oltre a funzioni che la rendono dinamica. \\
 \begin{figure}[h]
     \centering
     \includegraphics[width=1\linewidth]{navbar_logout.png}
@@ -110,14 +110,14 @@ Da notare il fatto che nel caso della figura 2.1 il pulsante "Home" presenta una
     \caption{Navbar utente comune}
     \label{fig:navbar_utente}
 \end{figure} \\
-Questa navbar presenta elementi simili alla precedente, ma si notano cambiamenti riguardo alle pagine a cui si può accedere ora. La parte destra di questa presenta invece maggiori differenze: al posto dei pulsanti per accedere o registrarsi vi sono altri che presentano il nome di "LEMEMIHE3" e "Logout". Il primo è relativo alla pagina del profilo e il suo nome è quello dell'username dell'utente, mentre il secondo consente di disconnettere l'account. \\
+Questa navbar presenta elementi simili alla precedente, ma si notano cambiamenti riguardo alle pagine a cui si può accedere ora. La parte destra di questa presenta invece maggiori differenze: al posto dei pulsanti per accedere o registrarsi vi sono altri che presentano il nome di "LEMEMIHE3" e "Logout". Il primo è relativo alla pagina del profilo e il suo nome è quello dell'username dell'utente, mentre il secondo consente effettuare la disconnessione dell'account. \\
 \begin{figure}[h]
     \centering
     \includegraphics[width=1\linewidth]{navbar_admin.png}
     \caption{Navbar utente amministratore}
     \label{fig:navbar_admin}
 \end{figure} \\
-Infine la navbar degli amministratori, la quale permette di accedere a pagine loro esclusive, ma anche ad altre simili quali utente nel caso del pulsante "CRISTIAN", il quale riporta il nome del proprietario di questo account di tipo amministratore, e quello di "Logout".
+Infine la navbar degli amministratori, la quale permette di accedere a pagine loro esclusive, ma anche ad altre simili quali "Profilo" nel caso del pulsante "CRISTIAN", il quale riporta il nome del proprietario di questo account di tipo amministratore, e quello di "Logout".
 \newpage
 \subsection{Home}
 \begin{figure}[h]
@@ -159,11 +159,11 @@ La pagina "Login" è dedicata all'accesso degli utenti. I dati richiesti vanno i
 \end{figure}
 Una volta avvenuto l'accesso da parte dell'utente, questo verrà indirizzato verso la pagina "Dashboard", cosiderata il cuore di 4Money, dove è possibile tenere sottocontrollo le principali informazioni che il sito fornisce. La pagina potrebbe essere definita in cinque sezioni:
 \begin{enumerate}
-    \item I cinque riquadri in alto mostrano informazioni quantitative sul saldo attuale dell'utente, oltre che sulle entrate e sulle uscite del mese e dell'anno in corso. Questi numeri vengono calcolati basandosi sulle transazioni inserite dall'utente e sul saldo iniziale inserito in fase di registrazione;
-    \item Sotto i riquadri a sinistra è presente il primo dei tre grafici della pagina realizzati con Highcharts. In particolare, questo è un grafico a torta che mostra le percentuali delle spese del mese in corso in base alla categoria. In questo modo l'utente si può rendere conto quale sia la categoria che è gli è costata maggiormente durante il mese.
-    \item Alla destra del grafico a torta è presente uno a linea, che mostra la variazione delle entrate durante i giorni del mese corrente;
-    \item In basso a sinistra vi è un grafico a colonne che indica il valore delle spese durante l'anno corrente per ogni mese;
-    \item Infine, in basso a destra, è presente una tabella che indica le imminenti scadenze delll'utente, da lui precedentemente inserite, fungendo da promemoria per esso.
+    \item I cinque riquadri in alto mostrano informazioni quantitative sul saldo attuale dell'utente, oltre che sulle entrate e sulle uscite del mese e dell'anno in corso. Questi numeri vengono calcolati basandosi sulle transazioni inserite dall'utente e sul saldo iniziale dichiarato in fase di registrazione
+    \item Sotto i riquadri a sinistra è presente il primo dei tre grafici della pagina realizzati con Highcharts. In particolare, questo è un grafico a torta che mostra le percentuali delle spese del mese in corso in base alla categoria. In questo modo l'utente si può rendere conto quale sia la categoria che è gli è costata maggiormente durante il mese
+    \item Alla destra del grafico a torta è presente un grafico ad area, che mostra la variazione delle entrate durante i giorni del mese corrente
+    \item In basso a sinistra vi è un grafico a colonne che indica il valore delle spese durante l'anno corrente per ogni mese
+    \item Infine, in basso a destra, è presente una tabella che indica le imminenti scadenze delll'utente, da lui precedentemente inserite, fungendo da promemoria per esso
 \end{enumerate}
 Osserviamo ora l'implementazione di uno dei grafici con Highcharts, il cui codice viene mostrato nella figura 2.9. \\
 \begin{figure}[h]
@@ -172,8 +172,8 @@ Osserviamo ora l'implementazione di uno dei grafici con Highcharts, il cui codic
     \caption{Codice del grafico a torta}
     \label{fig:piechart_code}
 \end{figure} \\
-Il codice si presenta come un comune script di JavaScript, costruendo un oggetto "Highcharts.chart" in base al nome inserito, nel nostro caso "pie chart", e alla compilazione dei vari attributi del grafico, come il titolo o il formato delle etichette delle sezioni, ma l'attributo di maggiore importanza è "series": andranno, infatti, inseriti qui i dati che devono essere inseriti nel grafico, in formato Json. Nel caso del grafico a torta i dati da inserire richiedono un nome, il nome della categoria per quello della pagina "Dashboard", un colore da assegnare alla sezione di quel dato e la percentuale da dedicare alla sezione. \\
-\MakeUppercase{è} necessario far notare che i dati mostrati dai grafici fanno riferimento al mese o anno fino al giorno attuale in cui vengono visualizzati e non a questi nella loro completezza. Si osserva facilmente infatti che il grafico a linea presenta informazioni fino al giorno 26, mentre il grafico a colonne fino al mese di ottobre, data in cui sono state salvate le schermate delle figure presenti in questa tesi.
+Il codice si presenta come un comune script di JavaScript, che costruisce un oggetto "Highcharts.chart" in base al nome del tipo di grafico inserito, nel nostro caso "pie chart", e alla compilazione dei vari attributi del grafico, come il titolo o il formato delle etichette delle sezioni. L'attributo di maggiore importanza è "series": andranno, infatti, inseriti qui i dati che devono essere visualizzati nel grafico, in formato Json. Nel caso del grafico a torta i dati richiedono un nome, il nome della categoria per quello della pagina "Dashboard, un colore da assegnare alla sezione di quel dato e la percentuale da dedicare alla sezione. \\
+\MakeUppercase{è} necessario far notare che i dati mostrati dai grafici fanno riferimento al mese o anno fino al giorno attuale in cui vengono visualizzati e non a questi nella loro completezza. Si osserva facilmente infatti che il grafico ad area presenta informazioni fino al giorno 26, mentre il grafico a colonne fino al mese di ottobre, data in cui sono state salvate le schermate delle figure presenti in questa tesi.
 \newpage
 \subsection{Transazioni}
 \begin{figure}[h]
@@ -187,9 +187,9 @@ La pagina "Transazioni" è la pagina dedita alla registrazione delle varie spese
     \item Attraverso i filtri, costituiti da due pulsanti a finestra dove è possibile selezionare la categoria ed il tipo, ovvero se la transazione è una spesa o un introito, di interesse. L'implementazione dei filtri è stata fatta con AJAX per evitare di dover caricare nuovamente la pagina ogni volta che si utilizza un filtro, in quanto l'utente potrebbe voler fare questa operazione numerose volte e questo permette una maggiore rapidità nell'esecuzione di tale azione;
     \item Attraverso pulsanti quali "Aggiungi entrata" ed "Aggiungi uscita", che permettono come suggerisce il nome di aggiungere una transazione del corrispettivo tipo, aprendo una sottofinestra detta "modal", di cui discuteremo successivamente
     \item Attraverso i pulsanti presenti alla destra di ogni transazione: il punsate grigio apre un modal simile a quello di registrazione delle transazioni, ma questo serve per modificare i dati della riga corrispondente; il pulsante rosso serve invece ad eliminare tale transazione.
-    \item Attraverso una barra di navigazione, che non ha nulla a che fare con la navbar, che si trova in fondo alla pagina. Questa permette di visualizzare altre transazioni oltre alle 20 presenti nella tabella, organizzate in ordine cronologico. Si può passare da una tabella alla precedente o successiva, o, in alternativa, verso la prima o ultima. Anche questa funzione è stata implementata con AJAX per rendere più dinamica questa operazione
+    \item Attraverso una barra di navigazione, che non ha nulla a che fare con la navbar, che si trova in fondo alla pagina. Questa permette di visualizzare altre transazioni oltre alle 20 presenti nella tabella, organizzate in ordine cronologico. Si può passare da una tabella alla precedente o successiva, o, in alternativa, verso la prima o ultima. Anche questa funzione è stata implementata con AJAX
 \end{itemize}
-Nella figura 2.11 si può osservare un esemopio di uno dei modal della pagina "Transazioni". \\
+Nella figura sottostante si può osservare un esempio di uno dei modal della pagina "Transazioni". \\
 \begin{figure}[h]
     \centering
     \includegraphics[width=1\linewidth]{modal_transazioni.png}
@@ -213,11 +213,11 @@ La pagina "Scadenze" è del tutto identica alla pagina "Transazioni" in aspetto 
     \caption{Pagina delle statistiche}
     \label{fig:statistiche}
 \end{figure}
-La pagina "Statistiche" presenta dei grafici di particolare interesse per l'utente nella gestione delle proprie finanze, senza essere caretterizzati dall'essenzialità di quelli presenti nella dashboard. In particolare la pagina presenta tre grafici e un pulsante che modifica il periodo di riferimento di quest'ultimi, in quanto normalemente la visulizzazione avviene per il mese corrente, ma è possibile selezionare come periodo anche l'anno in corso.
+La pagina "Statistiche" presenta dei grafici di particolare interesse per l'utente nella gestione delle proprie finanze, senza essere caretterizzati dall'essenzialità di quelli presenti nella dashboard. In particolare la pagina presenta tre grafici e un pulsante che modifica il periodo di riferimento di quest'ultimi, in quanto normalemente la visualizzazione avviene per il mese corrente, ma è possibile selezionare come periodo anche l'anno in corso.
 \begin{itemize}
-    \item Il grafico in alto è un misto tra grafico a linee ed ad area: le aree verdi e rosse rappresentano rispettivamente il valore delle entrate e delle uscite, mentre la linea azzurra mette in evidenza la differenza tra le precedenti. L'utente è così in grado di comprendere la distribuzione durante il mese o l'anno di come esso ricava o spende il proprio denaro;
-    \item Il grafico in basso a sinistra indica l'andamento del saldo nel corso del mese o anno di riferimento, dando modo all'utente di comprendere se esso è mai stato in crisi finanziarie oppure ha mantenuto un comportamento costante. Il calcolo dei valori del grafico dipendono dalle transazioni del periodo di riferimento, in particolare, il primo valore del periodo è lo stesso dell'ultimo del periodo precedente e viene calcolato in base a tutte le transazioni e al saldo iniziale dichiarato. Inoltre il colore del grafico dipende dal segno dell'ultimo valore disponibile: se questo è positivo la linea sarà di colore verde, come da figura, altrimenti, nel caso di un saldo negativo, la linea divernterà rossa, fungendo da indicatore di pericolo per l'utente che osserva tale grafico;
-    \item Il grafico in basso a destra, in modo simile al precedente, indica l'andamento del "Risparmio" durante il periodo di riferimento. Per risparmio si intende una particolare categoria nel modo in cui questa viene trattata. A seconda del tipo di transazione che ha "risparmio" come categoria il saldo si comporterà in modo diverso: se sto segnando una spesa allora questa verrà considerata come un decremento per il saldo ed un incremento per il risparmio, al contrario, un entrata è considerata un incremento del saldo ed un decremento per il risparmio. Lo scopo di questa funzione è di permettere all'utente di poter gestire un conto di risparmio aiutando l'utente a "salvare" i propri soldi. Anche questo grafico cambia colore in base al segno dell'ultimo valore disponibile.
+    \item Il grafico in alto è un misto tra grafico a linee ed ad area: le aree verdi e rosse rappresentano rispettivamente il valore delle entrate e delle uscite, mentre la linea azzurra mette in evidenza la differenza tra le precedenti. L'utente è così in grado di comprendere la distribuzione durante il mese o l'anno di come esso ricava o spende il proprio denaro
+    \item Il grafico in basso a sinistra indica l'andamento del saldo nel corso del mese o anno di riferimento, dando modo all'utente di comprendere se esso è mai stato in crisi finanziarie oppure ha mantenuto un comportamento costante. Il calcolo dei valori del grafico dipendono dalle transazioni del periodo di riferimento, in particolare, il primo valore del periodo è lo stesso dell'ultimo del periodo precedente e viene calcolato in base a tutte le transazioni e al saldo iniziale dichiarato. Inoltre il colore del grafico dipende dal segno dell'ultimo valore disponibile: se questo è positivo la linea sarà di colore verde, come da figura, altrimenti, nel caso di un saldo negativo, la linea divernterà rossa, fungendo da indicatore di pericolo per l'utente che osserva tale grafico
+    \item Il grafico in basso a destra, in modo simile al precedente, indica l'andamento del "Risparmio" durante il periodo di riferimento. Per risparmio si intende una particolare categoria nel modo in cui questa viene trattata. A seconda del tipo di transazione che ha "risparmio" come categoria il saldo si comporterà in modo diverso: se sto segnando una spesa allora questa verrà considerata come un decremento per il saldo ed un incremento per il risparmio, al contrario, un entrata è considerata un incremento del saldo ed un decremento per il risparmio. Lo scopo di questa funzione è di permettere all'utente di poter gestire un conto di risparmio aiutando l'utente a "salvare" i propri soldi. Anche questo grafico cambia colore in base al segno dell'ultimo valore disponibile
 \end{itemize}
 \subsection{Profilo utente}
 \begin{figure}[h]
@@ -229,9 +229,9 @@ La pagina "Statistiche" presenta dei grafici di particolare interesse per l'uten
 La pagina "Profilo" è la pagina nella quale l'utente può visualizzare le informazioni riguardanti il proprio profilo inserite in fase di registrazione. L'interfaccia si presenta divisa in 4 sezioni di interesse:
 \begin{itemize}
     \item In alto a sinistra la sezione "Profilo", dove vengono mostrati l'username e l'immagine di profilo, la quale può essere modificata, ma selezionata solo tra quelle predefinite dal sito;
-    \item In basso a sinistra la sezione "Esporta transazioni effettuate". Qui sono tre presenti tre pulsanti che permettono, come suggerisce il loro nome, di scaricare le informazioni della tabella della pagina "Transazioni" in diversi formati: Json, CSV e XML;
+    \item In basso a sinistra la sezione "Esporta transazioni effettuate". Qui sono presenti tre pulsanti che permettono, come suggerisce il loro nome, di scaricare le informazioni della tabella della pagina "Transazioni" in diversi formati: Json, CSV e XML;
     \item In alto a destra la sezione "Informazioni personali", composta da un form dove è possibile modificare i dati personali dell'utente;
-    \item In basso a destra la sezione "Dati di accesso", anche questa composta da un form del tutto indipendente dal precedente, dove è possibile modificare le informazioni strattamente riguardanti l'account. Nel caso in cui attraverso questa sezione venga modificata la password l'utente sarà disconnesso in automatico e dovrà effettuare nuovamente l'accesso, questa volta utilizzando la nuova password.
+    \item In basso a destra la sezione "Dati di accesso", anche questa composta da un form del tutto indipendente dal precedente, dove è possibile modificare le informazioni strettamente riguardanti l'account. Nel caso in cui attraverso questa sezione venga modificata la password l'utente sarà disconnesso in automatico e dovrà effettuare nuovamente l'accesso, questa volta utilizzando la nuova password.
 \end{itemize}
 \subsection{Utente amministratore}
 \subsubsection{Utenti}
@@ -241,7 +241,7 @@ La pagina "Profilo" è la pagina nella quale l'utente può visualizzare le infor
     \caption{Pagina degli utenti}
     \label{fig:utenti_admin}
 \end{figure}
-La pagina "Utenti" è la prima che gli amministratori visualizzano dopo aver effettuato l'accesso. Questa è composta da una tabella dove vengono visualizzati i dati degli utenti registrati; ogni riga rappresenta un diverso utente e il colore dipende dal suo sesso. Le funzioni principali della pagina però risiedono nei pulsanti "Blocca utente" ed "Elimina utente", i quali come suggerisce il nome servono rispettivamente a bloccare ed eliminare l'account dell'utente corrispondente alla riga. Per bloccare un utente si entende impedire a questo l'accesso modificando la sua password, mentre l'eliminazione implica la completa rimozione dell'account dalla base di dati insieme a tutte le sue transazioni.
+La pagina "Utenti" è la prima che gli amministratori visualizzano dopo aver effettuato l'accesso. Questa è composta da una tabella dove vengono visualizzati i dati degli utenti registrati; ogni riga rappresenta un diverso utente e il colore dipende dal suo genere. Le funzioni principali della pagina però risiedono nei pulsanti "Blocca utente" ed "Elimina utente", i quali come suggerisce il nome servono rispettivamente a bloccare ed eliminare l'account dell'utente corrispondente alla riga. Per bloccare un utente si entende impedire a questo l'accesso modificando la sua password, mentre l'eliminazione implica la completa rimozione dell'account dalla base di dati insieme a tutte le sue transazioni. Il blocco degli utenti avviene modificando la loro password: viene aggiunto un particolare suffisso riconoscibile dal sistema, il quale etichetterà l'utente come bloccato se riscontrerà tale suffisso. Naturalemente si possono anche sbloccare gli utenti in modo analogo.
 \subsubsection{Categorie}
 \begin{figure}[h]
     \centering
@@ -250,26 +250,27 @@ La pagina "Utenti" è la prima che gli amministratori visualizzano dopo aver eff
     \label{fig:categorie}
 \end{figure}
 La pagina "Categorie" è la pagina attraverso cui gli amministratori possono gestire le categorie delle transazioni. Anche qui è presente una tabella le cui righe indicano le diverse categorie mentre le colonne i dati relativi ad esse, oltre a due pulsanti per la modifica e l'eliminazione. Ogni categoria è caratterizzata da un nome, per essere riconoscibile dall'utente ed un colore per l'interazione visiva attraverso i grafici. \MakeUppercase{è} possibile anche creare le categorie attraverso il pulsante "Aggiungi categoria" le quali saranno in seguito disponibili a tutti gli utenti. La creazione e modifica delle categorie avviene l'utilizzo di un modal come è visibile nella figura 2.17.
+\newpage
 \begin{figure}[h]
     \centering
     \includegraphics[width=1\linewidth]{modal_categorie.png}
     \caption{Modal delle categorie}
     \label{fig:modal_categorie}
 \end{figure}
-Questo modal richiedi di compilare solamente i campi riguardanti il nome e il colore. quest'ultimo selezionabile da una palette che si apre dopo aver usato l'apposito pulsante. Facendo click su "Chiudi" l'operazione viene annullata, mentre "Salva modifiche" rende ufficiale la creazione della categoria.
+Questo modal richiede di compilare solamente i campi riguardanti il nome e il colore. quest'ultimo selezionabile da una palette che si apre dopo aver usato l'apposito pulsante. Facendo click su "Chiudi" l'operazione viene annullata, mentre "Salva modifiche" rende ufficiale la creazione della categoria.
 \subsubsection{Statistiche}
 \begin{figure}[h]
     \centering
-    \includegraphics[width=1\linewidth]{stat_admin.png}
+    \includegraphics[width=0.8\linewidth]{stat_admin.png}
     \caption{Pagina delle statistiche degli amministratori}
     \label{fig:statistiche_admin}
 \end{figure}
-La pagina "Statistiche" del profilo amministratore contiene similmente dei grafici come per gli utenti comuni, ma i dati riportati sono sostanzialmente diverse: si osservano diverse distribuzioni riguardo gli utenti il cui scopo è consentire gli amministratori di cogliere eventuali informazioni su come l'applicazione può essere migliorata.
+La pagina "Statistiche" del profilo amministratore contiene similmente dei grafici come per gli utenti comuni, ma i dati riportati sono sostanzialmente diversi: si osservano diverse distribuzioni riguardo gli utenti il cui scopo è consentire agli amministratori di cogliere eventuali informazioni su come l'applicazione può essere migliorata.
 I grafici presenti sono i seguenti:
 \begin{itemize}
-    \item In alto a sinistra vengono mostrate le percentuali di utenti in base a sesso ed età, dove il colore e la direzione indicano il sesso, mentre la riga indica a quale classe di età appartiene. In questo modo si può capire quali sono le persone che utilizzano la piattaforma e suggerisce verso quale direzione i futuri cambiamenti debbano vertere per aumentare il numero di iscritti.
+    \item In alto a sinistra vengono mostrate le percentuali di utenti in base a genere ed età, dove il colore e la direzione indicano il genere, mentre le righe indicano a quale classe di età appartiengono. In questo modo si può capire quali sono le persone che utilizzano la piattaforma e suggerisce verso quale direzione i futuri cambiamenti debbano vertere per aumentare il numero di iscritti.
     \item In alto a destra il grafico a colonne indica il numero di utenti per nazione. L'informazione suggerisce dove l'applicazione si è diffusa maggiormente e come si dovrebbe agire di conseguenza per renderla più accessibile.
-    \item In basso il grafico mostra la media delle entrate o delle uscite, in base al filtro selezionato, degli utenti in base al sesso e l'età. I dati del grafico sono finalizzati alla creazione di nuove funzionalità della piattaforma.
+    \item In basso il grafico mostra la media delle entrate o delle uscite, in base al filtro selezionato, degli utenti in base al genere e l'età. Anche i dati di questo grafico sono finalizzati alla creazione di nuove funzionalità della piattaforma.
 \end{itemize}
 \subsubsection{Profilo}
 \begin{figure}[h]
@@ -363,27 +364,27 @@ Sono inoltre presenti delle foreign keys:
     \item L'attributo "categoria" della tabella Spesa verso l'attributo "ID" della tabella Categoria
 \end{enumerate}
 \subsection{Comunicazione con il Server}
-Per ottenere ed elaborare i dati della base di dati 4Money utilizza diverse SQL queries. Un esempio è visibile nel codice della figura 3.2.
+Per ottenere ed elaborare i dati della base di dati 4Money utilizza diverse SQL queries. Un esempio è visibile nel codice della figura 3.2. \\
 \begin{figure}[h]
     \centering
     \includegraphics[width=1\linewidth]{piechart_sql.png}
     \caption{Codice della query per ottenere i dati del grafico a torta}
     \label{fig:oiechart_code}
-\end{figure}
+\end{figure} \\
 Il codice qui riportato è una funzione Php che esegue in ordine i seguenti passaggi:
 \begin{enumerate}
-    \item Prende come parametro una variabile "conn", la quale indica la connessione il database
+    \item Prende come parametro una variabile "conn", la quale indica la connessione con il database
     \item Inizializza le variabili "username" e "data\_oggi", prendendo i dati dai parametri della sessione. L'username è necessario per raccogliere i dati della persona corretta, mentre la data del giorno in cui viene invocata questa funzione per evitare di considerare dati futuri
     \item Viene poi definita la query, la quale seleziona il nome della categoria, le percentuali delle spese divise per categoria e il colore delle categorie, escludendo la categoria "Risparmio"
     \item Viene eseguita la query e le righe dei risultati vengono inserite in un array in base alle chiavi "name", "y", "color"
-    \L'array creato viene codificato in formato Json. Nel caso la query non abbia riportato alcun risultato, ovvero l'utente non ha ancora registrato alcuna spesa, viene restituito un array vuoto, sempre codificato in Json
+    \item L'array creato viene codificato in formato Json. Nel caso la query non abbia riportato alcun risultato, ovvero l'utente non ha ancora registrato alcuna spesa, viene restituito un array vuoto, sempre codificato in Json
 \end{enumerate}
 Alcune scelte come il formato Json e il nome delle chiavi sono dovute alle richieste degli script di Highcharts, il quale legge i dati solamente in questo specifico formato.
 \subsection{Sicurezza}
-4Money ha bisogno di garantire un certo livello di sicurezza, essendo una piattaforma dove gli utenti possono salvare informazioni personali, e sono state, di conseguenza, implemtentate diverse funzioni per poterla garantire. \\
-Per poter accedere alle pagine degli utenti comuni o degli amministratori, è obbligatorio dover prima effettuare l'accesso attraverso la pagina "Login". Infatti, il form che si occupa di raccogliere le credenziali di accesso passerà i dati alle variabili di sessione, la cui autenticità verrà verificata. Nel caso non vi siano account corrispondenti alle credenziali inserite si riceverà un messaggio di errore e verrà richiesto di inserirle nuovamente. In modo simile, se si prova per esempio a eludere l'accesso modificando manualmente l'URL si verrà semplicemente indirizzati nuovamente verso la pagina "Login".
+4Money ha bisogno di garantire un certo livello di sicurezza, essendo una piattaforma dove gli utenti possono salvare informazioni personali, e sono state, di conseguenza, implementate diverse funzioni per poterla garantire. \\
+Per poter accedere alle pagine degli utenti comuni o degli amministratori, è obbligatorio dover prima effettuare l'accesso attraverso la pagina "Login". Infatti, il form che si occupa di raccogliere le credenziali di accesso passerà i dati alle variabili di sessione e in seguito la loro autenticità verrà verificata. Nel caso non vi siano account corrispondenti alle credenziali inserite si riceverà un messaggio di errore e verrà richiesto di inserirle nuovamente. In modo simile, se si prova per esempio a eludere l'accesso modificando manualmente l'URL si verrà semplicemente indirizzati nuovamente verso la pagina "Login". \\
 Il "Logout" è a sua volta definitivo: una volta effettuato la sessione viene distrutta e sarà obbligatorio accedere nuovamente per crearne una nuova. \\
-Le password degli utenti non vengono salvate in chiaro nella base di dati, ma sono codificate prima con una funzione di hashing. //
+Le password degli utenti non sono salvate in chiaro nella base di dati, ma vengono codificate prima con una funzione di hashing. \\
 Nella figura 3.3 viene riportata una funzione che si occupa di validare i dati inseriti nei campi di testo presenti in pagine quali "Login" e "Register" e nei modal. Viene fatta particolare attenzione a questi perchè facilemente attaccabili dai malintenzionati utilizzando tecniche come SQL injection.
 \newpage
 \begin{figure}[h]
@@ -392,7 +393,7 @@ Nella figura 3.3 viene riportata una funzione che si occupa di validare i dati i
     \caption{Funzione che valida i campi di testo}
     \label{fig:validate_code}
 \end{figure} 
-La funzione prende come parametro la stringa inserita e nel campo e esegue le seguenti modifiche:
+La funzione prende come parametro la stringa inserita nel campo ed esegue le seguenti modifiche:
 \begin{itemize}
     \item trim: elimina gli spazi vuoti
     \item stripslashes: elimina le virgolette ("")
@@ -400,10 +401,10 @@ La funzione prende come parametro la stringa inserita e nel campo e esegue le se
 \end{itemize}
 \newpage
 \section{Conclusioni}
-Nel complesso si può considerare 4Money come un'applicazione web pienamente funzionate che offre un vero servizio ai propri utenti. Detto ciò, mantiene un enorme potenziale, con una vasta gamma di potenziali funzioni non ancora implementate nell'attuale versione.
+Nel complesso si può considerare 4Money come un'applicazione web pienamente funzionante che offre un vero servizio ai propri utenti. Detto ciò, mantiene un enorme potenziale, con una vasta gamma di funzioni non ancora implementate nell'attuale versione.
 \subsection{Estendibilità}
 \subsubsection{Utilizzo di tecnologie di predizione con IA}
-Nell'ultimo periodo si sono diffuse moltissime applicazioni che utilizzano l'intelligenza artificiale e 4Money presenta molte funzioni che possono sfruttare tali tecnologie. In particolare, si potrebbero utilizzare algoritmi di predizione per calcolare in anticipo come un utente spenderà il proprio denaro e di conseguenza guidarlo verso abitudini finanziarie più responsabili se necessario, o comunque in generale permetterà ad esso di farsi un'idea di come le proprie finanze varieranno nei mesi od anni a venire. Allo stesso tempo anche algoritmi di classificazione sarebbero utili per etichettare certi utenti ad esempio come "bravi risparmiatori" o meno, suggerendo in modo oppurtuno eventuali variazioni nella gestione monetaria di questo.
+Nell'ultimo periodo si sono diffuse moltissime applicazioni che utilizzano l'intelligenza artificiale e 4Money presenta molte funzioni che possono sfruttare tali tecnologie. In particolare, si potrebbero utilizzare algoritmi di predizione per calcolare in anticipo come un utente spenderà il proprio denaro e di conseguenza guidarlo verso abitudini finanziarie più responsabili se necessario, o comunque in generale permetterà ad esso di farsi un'idea di come le proprie finanze varieranno nei mesi od anni a venire. Allo stesso tempo anche algoritmi di classificazione sarebbero utili per etichettare certi utenti ad esempio come "bravi risparmiatori" o meno, suggerendo in modo oppurtuno eventuali variazioni nella gestione monetaria di questi.
 \subsubsection{Introduzione di più valute}
 Nella versione attuale 4Money prende in considerazione come valuta solo l'euro, ma ciò potrebbe essere una limitazione per utenti che provengono da paesi che non utilizzano tale moneta. Al fine di evitare ciò si potrebbero implementare anche transazioni che avvengono in diverse valute, magari su conti paralleli separati in base ad essa, consentendo, con una conversione automatica, di gestire il passaggio tra uno di questi conti e l'altro in totale autonomia.
 \subsubsection{Introduzione di profili imprenditoriali}
