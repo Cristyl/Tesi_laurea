@@ -358,9 +358,57 @@ La pagina "Profilo" degli amministratori consente di cambiare il nome, dato che 
 \newpage
 Sono inoltre presenti delle foreign keys:
 \begin{enumerate}
-    \item L'attributo nazionalità della tabella Utente verso l'attributo nome\_stati della tabella Stati
-    \item L'attributo utente della tabella Spesa verso l'attributo username della tabella Utente
-    \item L'attributo categoria della tabella Spesa verso l'attributo ID della tabella Categoria
+    \item L'attributo "nazionalità" della tabella Utente verso l'attributo "nome\_stati" della tabella Stati
+    \item L'attributo "utente" della tabella Spesa verso l'attributo "username" della tabella Utente
+    \item L'attributo "categoria" della tabella Spesa verso l'attributo "ID" della tabella Categoria
 \end{enumerate}
+\subsection{Comunicazione con il Server}
+Per ottenere ed elaborare i dati della base di dati 4Money utilizza diverse SQL queries. Un esempio è visibile nel codice della figura 3.2.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{piechart_sql.png}
+    \caption{Codice della query per ottenere i dati del grafico a torta}
+    \label{fig:oiechart_code}
+\end{figure}
+Il codice qui riportato è una funzione Php che esegue in ordine i seguenti passaggi:
+\begin{enumerate}
+    \item Prende come parametro una variabile "conn", la quale indica la connessione il database
+    \item Inizializza le variabili "username" e "data\_oggi", prendendo i dati dai parametri della sessione. L'username è necessario per raccogliere i dati della persona corretta, mentre la data del giorno in cui viene invocata questa funzione per evitare di considerare dati futuri
+    \item Viene poi definita la query, la quale seleziona il nome della categoria, le percentuali delle spese divise per categoria e il colore delle categorie, escludendo la categoria "Risparmio"
+    \item Viene eseguita la query e le righe dei risultati vengono inserite in un array in base alle chiavi "name", "y", "color"
+    \L'array creato viene codificato in formato Json. Nel caso la query non abbia riportato alcun risultato, ovvero l'utente non ha ancora registrato alcuna spesa, viene restituito un array vuoto, sempre codificato in Json
+\end{enumerate}
+Alcune scelte come il formato Json e il nome delle chiavi sono dovute alle richieste degli script di Highcharts, il quale legge i dati solamente in questo specifico formato.
+\subsection{Sicurezza}
+4Money ha bisogno di garantire un certo livello di sicurezza, essendo una piattaforma dove gli utenti possono salvare informazioni personali, e sono state, di conseguenza, implemtentate diverse funzioni per poterla garantire. \\
+Per poter accedere alle pagine degli utenti comuni o degli amministratori, è obbligatorio dover prima effettuare l'accesso attraverso la pagina "Login". Infatti, il form che si occupa di raccogliere le credenziali di accesso passerà i dati alle variabili di sessione, la cui autenticità verrà verificata. Nel caso non vi siano account corrispondenti alle credenziali inserite si riceverà un messaggio di errore e verrà richiesto di inserirle nuovamente. In modo simile, se si prova per esempio a eludere l'accesso modificando manualmente l'URL si verrà semplicemente indirizzati nuovamente verso la pagina "Login".
+Il "Logout" è a sua volta definitivo: una volta effettuato la sessione viene distrutta e sarà obbligatorio accedere nuovamente per crearne una nuova. \\
+Le password degli utenti non vengono salvate in chiaro nella base di dati, ma sono codificate prima con una funzione di hashing. //
+Nella figura 3.3 viene riportata una funzione che si occupa di validare i dati inseriti nei campi di testo presenti in pagine quali "Login" e "Register" e nei modal. Viene fatta particolare attenzione a questi perchè facilemente attaccabili dai malintenzionati utilizzando tecniche come SQL injection.
+\newpage
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{validate_code.png}
+    \caption{Funzione che valida i campi di testo}
+    \label{fig:validate_code}
+\end{figure} 
+La funzione prende come parametro la stringa inserita e nel campo e esegue le seguenti modifiche:
+\begin{itemize}
+    \item trim: elimina gli spazi vuoti
+    \item stripslashes: elimina le virgolette ("")
+    \item htmlspecialchars : converte i caratteri speciali in un formato tale che non possano essere interpretati come codice Html
+\end{itemize}
+\newpage
+\section{Conclusioni}
+Nel complesso si può considerare 4Money come un'applicazione web pienamente funzionate che offre un vero servizio ai propri utenti. Detto ciò, mantiene un enorme potenziale, con una vasta gamma di potenziali funzioni non ancora implementate nell'attuale versione.
+\subsection{Estendibilità}
+\subsubsection{Utilizzo di tecnologie di predizione con IA}
+Nell'ultimo periodo si sono diffuse moltissime applicazioni che utilizzano l'intelligenza artificiale e 4Money presenta molte funzioni che possono sfruttare tali tecnologie. In particolare, si potrebbero utilizzare algoritmi di predizione per calcolare in anticipo come un utente spenderà il proprio denaro e di conseguenza guidarlo verso abitudini finanziarie più responsabili se necessario, o comunque in generale permetterà ad esso di farsi un'idea di come le proprie finanze varieranno nei mesi od anni a venire. Allo stesso tempo anche algoritmi di classificazione sarebbero utili per etichettare certi utenti ad esempio come "bravi risparmiatori" o meno, suggerendo in modo oppurtuno eventuali variazioni nella gestione monetaria di questo.
+\subsubsection{Introduzione di più valute}
+Nella versione attuale 4Money prende in considerazione come valuta solo l'euro, ma ciò potrebbe essere una limitazione per utenti che provengono da paesi che non utilizzano tale moneta. Al fine di evitare ciò si potrebbero implementare anche transazioni che avvengono in diverse valute, magari su conti paralleli separati in base ad essa, consentendo, con una conversione automatica, di gestire il passaggio tra uno di questi conti e l'altro in totale autonomia.
+\subsubsection{Introduzione di profili imprenditoriali}
+4Money ha le potenzialità di diventare un potente strumento anche per imprenditori e proprietari d'azienda, ma sarebbe necessario creare per loro un diverso tipo di profilo che si distingua da quello comune. Ovviamente anche le funzionalità che questo nuovo tipo di profilo offre dovranno diversificarsi ed essere mirate alla gestione aziendale, come redazione automatica del bilancio in base alle transazioni inserite o calcolo di indici finanziari quali ROE e ROI.
+\subsubsection{Introduzione di transazioni ricorsive}
+Come si può notare dai dati inseriti come esempio per questa tesi, vi sono molte transazioni che potrebbero essere definite ricorsive, ovvero che si ripetono a distanza prestabilita di tempo o in un giorno specifico del mese, quali ad esempio affitto, rate o anche lo stipendio. Sicuramente il dover inserire manualmente la stessa transazione potrebbe diventare un onere noioso e poco intuitivo per gli utenti, ecco perchè sarebbe comodo poter inserire direttamente secondo certi parametri transazioni ricorsive o avere l'oppurtunità di rimuoverle se necessario.
 
 \end{document}
